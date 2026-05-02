@@ -1,0 +1,373 @@
+{% extends "layout.html" %}
+{% block title %}Home — Pixly{% endblock %}
+
+{% block head %}
+<style>
+    .navbar {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        height: 60px;
+        background: rgba(13,13,15,0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 32px;
+        z-index: 100;
+    }
+
+    .nav-logo {
+        font-family: 'DM Serif Display', serif;
+        font-size: 24px;
+        color: var(--accent);
+    }
+
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .nav-user {
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    .nav-user span {
+        color: var(--text);
+        font-weight: 500;
+    }
+
+    .logout-btn {
+        padding: 7px 16px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--muted);
+        font-size: 13px;
+        transition: border-color 0.2s, color 0.2s;
+        cursor: pointer;
+        background: none;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .logout-btn:hover {
+        border-color: var(--error);
+        color: var(--error);
+    }
+
+    .main {
+        padding-top: 60px;
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 240px 1fr 280px;
+        gap: 0;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Left sidebar */
+    .sidebar-left {
+        padding: 32px 24px;
+        border-right: 1px solid var(--border);
+        position: sticky;
+        top: 60px;
+        height: calc(100vh - 60px);
+        overflow-y: auto;
+    }
+
+    .sidebar-title {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 16px;
+    }
+
+    .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 11px 14px;
+        border-radius: 10px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+        margin-bottom: 4px;
+    }
+
+    .nav-item:hover, .nav-item.active {
+        background: var(--surface);
+        color: var(--text);
+    }
+
+    .nav-item.active { color: var(--accent); }
+
+    .nav-icon {
+        width: 20px;
+        height: 20px;
+        opacity: 0.7;
+        flex-shrink: 0;
+    }
+
+    /* Feed */
+    .feed {
+        padding: 32px 40px;
+        border-right: 1px solid var(--border);
+    }
+
+    .feed-header {
+        font-family: 'DM Serif Display', serif;
+        font-size: 22px;
+        margin-bottom: 28px;
+    }
+
+    /* Skeleton post cards */
+    .post-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        animation: fadeIn 0.4s ease both;
+    }
+
+    .post-card:nth-child(2) { animation-delay: 0.1s; }
+    .post-card:nth-child(3) { animation-delay: 0.2s; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .post-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+    }
+
+    .avatar-skel {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--border);
+        flex-shrink: 0;
+        animation: shimmer 1.5s infinite;
+    }
+
+    .text-skel {
+        height: 10px;
+        border-radius: 6px;
+        background: var(--border);
+        animation: shimmer 1.5s infinite;
+    }
+
+    .text-skel.short  { width: 100px; }
+    .text-skel.xshort { width: 60px; margin-top: 6px; }
+
+    .media-skel {
+        width: 100%;
+        aspect-ratio: 4/3;
+        background: var(--border);
+        animation: shimmer 1.5s infinite;
+    }
+
+    .post-actions {
+        padding: 16px 20px;
+        display: flex;
+        gap: 20px;
+    }
+
+    .action-skel {
+        height: 10px;
+        width: 50px;
+        border-radius: 6px;
+        background: var(--border);
+        animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+        0%, 100% { opacity: 0.4; }
+        50%       { opacity: 0.8; }
+    }
+
+    /* Placeholder badge */
+    .placeholder-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(232,197,71,0.1);
+        border: 1px solid rgba(232,197,71,0.25);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 500;
+        padding: 6px 12px;
+        border-radius: 99px;
+        margin-bottom: 24px;
+    }
+
+    /* Right sidebar */
+    .sidebar-right {
+        padding: 32px 24px;
+        position: sticky;
+        top: 60px;
+        height: calc(100vh - 60px);
+        overflow-y: auto;
+    }
+
+    .suggestions-title {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 20px;
+    }
+
+    .suggestion {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .follow-btn {
+        margin-left: auto;
+        padding: 6px 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 600;
+        background: none;
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+        transition: background 0.2s;
+        flex-shrink: 0;
+    }
+
+    .follow-btn:hover { background: rgba(232,197,71,0.08); }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-logo">Pixly</div>
+    <div class="nav-right">
+        <span class="nav-user">Logged in as <span>{{ username }}</span></span>
+        <a href="/logout"><button class="logout-btn">Log out</button></a>
+    </div>
+</nav>
+
+<div class="main">
+
+    <!-- Left Sidebar -->
+    <aside class="sidebar-left">
+        <p class="sidebar-title">Menu</p>
+
+        <div class="nav-item active">
+            <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M13 5v14" />
+            </svg>
+            Home
+        </div>
+        <div class="nav-item">
+            <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/>
+            </svg>
+            Explore
+        </div>
+        <div class="nav-item">
+            <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            New Post
+        </div>
+        <div class="nav-item">
+            <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A7 7 0 1112 19a7 7 0 01-6.879-1.196z" />
+            </svg>
+            Profile
+        </div>
+    </aside>
+
+    <!-- Feed -->
+    <main class="feed">
+        <div class="placeholder-badge">
+            🚧 Coming soon — posts will appear here
+        </div>
+
+        <h2 class="feed-header">Your Feed</h2>
+
+        <!-- Skeleton post 1 -->
+        <div class="post-card">
+            <div class="post-header">
+                <div class="avatar-skel"></div>
+                <div>
+                    <div class="text-skel short"></div>
+                    <div class="text-skel xshort"></div>
+                </div>
+            </div>
+            <div class="media-skel"></div>
+            <div class="post-actions">
+                <div class="action-skel"></div>
+                <div class="action-skel"></div>
+            </div>
+        </div>
+
+        <!-- Skeleton post 2 -->
+        <div class="post-card">
+            <div class="post-header">
+                <div class="avatar-skel"></div>
+                <div>
+                    <div class="text-skel short"></div>
+                    <div class="text-skel xshort"></div>
+                </div>
+            </div>
+            <div class="media-skel"></div>
+            <div class="post-actions">
+                <div class="action-skel"></div>
+                <div class="action-skel"></div>
+            </div>
+        </div>
+
+        <!-- Skeleton post 3 -->
+        <div class="post-card">
+            <div class="post-header">
+                <div class="avatar-skel"></div>
+                <div>
+                    <div class="text-skel short"></div>
+                    <div class="text-skel xshort"></div>
+                </div>
+            </div>
+            <div class="media-skel"></div>
+            <div class="post-actions">
+                <div class="action-skel"></div>
+                <div class="action-skel"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Right Sidebar -->
+    <aside class="sidebar-right">
+        <p class="suggestions-title">Suggested for you</p>
+
+        {% for i in range(4) %}
+        <div class="suggestion">
+            <div class="avatar-skel"></div>
+            <div>
+                <div class="text-skel short"></div>
+                <div class="text-skel xshort"></div>
+            </div>
+            <button class="follow-btn">Follow</button>
+        </div>
+        {% endfor %}
+    </aside>
+
+</div>
+{% endblock %}

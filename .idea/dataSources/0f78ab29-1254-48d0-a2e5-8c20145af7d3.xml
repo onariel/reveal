@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.54">
     <root id="1">
       <DateStyle>dmy</DateStyle>
-      <IntrospectionStateNumber>778</IntrospectionStateNumber>
+      <IntrospectionStateNumber>781</IntrospectionStateNumber>
       <ServerVersion>18.3</ServerVersion>
       <StartupTime>1777630630</StartupTime>
       <TimeZones>true ACDT
@@ -802,7 +802,7 @@ false Zulu
 14860||10|C|G
 14860||-9223372036854775808|U|G
 14860||10|U|G</Grants>
-      <IntrospectionStateNumber>778</IntrospectionStateNumber>
+      <IntrospectionStateNumber>781</IntrospectionStateNumber>
       <ObjectId>5</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -4318,11 +4318,11 @@ false Zulu
       <AutoIntrospectionLevel>3</AutoIntrospectionLevel>
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <LastIntrospectionL1Xid>778</LastIntrospectionL1Xid>
-      <LastIntrospectionL2Xid>778</LastIntrospectionL2Xid>
-      <LastIntrospectionL3Xid>778</LastIntrospectionL3Xid>
+      <LastIntrospectionL1Xid>781</LastIntrospectionL1Xid>
+      <LastIntrospectionL2Xid>781</LastIntrospectionL2Xid>
+      <LastIntrospectionL3Xid>781</LastIntrospectionL3Xid>
       <LastIntrospectionLevel>3</LastIntrospectionLevel>
-      <LastIntrospectionLocalTimestamp>2026-05-01.16:18:53</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2026-05-02.12:14:59</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>546</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
@@ -4394,7 +4394,7 @@ false Zulu
     <table id="280" parent="271" name="users">
       <DetailsLevel>2</DetailsLevel>
       <ObjectId>16409</ObjectId>
-      <StateNumber>777</StateNumber>
+      <StateNumber>780</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
@@ -4490,7 +4490,20 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>16409</RefTableId>
     </foreign-key>
-    <column id="293" parent="278" name="id">
+    <index id="293" parent="277" name="unique_follow">
+      <ColNames>user1_id
+user2_id</ColNames>
+      <ObjectId>16491</ObjectId>
+      <StateNumber>779</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="294" parent="277" name="unique_follow">
+      <ObjectId>16492</ObjectId>
+      <StateNumber>779</StateNumber>
+      <UnderlyingIndexId>16491</UnderlyingIndexId>
+    </key>
+    <column id="295" parent="278" name="id">
       <DefaultExpression>nextval(&apos;likes_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -4499,21 +4512,21 @@ false Zulu
       <SequenceId>16453</SequenceId>
       <TypeId>23</TypeId>
     </column>
-    <column id="294" parent="278" name="post_id">
+    <column id="296" parent="278" name="post_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>766</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <column id="295" parent="278" name="user_id">
+    <column id="297" parent="278" name="user_id">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>766</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <column id="296" parent="278" name="timestamp">
+    <column id="298" parent="278" name="timestamp">
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>4</Position>
@@ -4521,7 +4534,7 @@ false Zulu
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <foreign-key id="297" parent="278" name="likes_post_id_fkey">
+    <foreign-key id="299" parent="278" name="likes_post_id_fkey">
       <ColNames>post_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16465</ObjectId>
@@ -4530,7 +4543,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>16419</RefTableId>
     </foreign-key>
-    <foreign-key id="298" parent="278" name="likes_user_id_fkey">
+    <foreign-key id="300" parent="278" name="likes_user_id_fkey">
       <ColNames>user_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16470</ObjectId>
@@ -4539,7 +4552,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>16409</RefTableId>
     </foreign-key>
-    <index id="299" parent="278" name="likes_pkey">
+    <index id="301" parent="278" name="likes_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16463</ObjectId>
@@ -4548,14 +4561,14 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="300" parent="278" name="likes_pkey">
+    <key id="302" parent="278" name="likes_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16464</ObjectId>
       <Primary>1</Primary>
       <StateNumber>766</StateNumber>
       <UnderlyingIndexId>16463</UnderlyingIndexId>
     </key>
-    <column id="301" parent="279" name="id">
+    <column id="303" parent="279" name="id">
       <DefaultExpression>nextval(&apos;posts_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -4564,34 +4577,34 @@ false Zulu
       <SequenceId>16418</SequenceId>
       <TypeId>23</TypeId>
     </column>
-    <column id="302" parent="279" name="user_id">
+    <column id="304" parent="279" name="user_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>766</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <column id="303" parent="279" name="caption">
+    <column id="305" parent="279" name="caption">
       <Position>3</Position>
       <StateNumber>766</StateNumber>
       <StoredType>text|0s</StoredType>
       <TypeId>25</TypeId>
     </column>
-    <column id="304" parent="279" name="media_path">
+    <column id="306" parent="279" name="media_path">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>766</StateNumber>
       <StoredType>text|0s</StoredType>
       <TypeId>25</TypeId>
     </column>
-    <column id="305" parent="279" name="media_type">
+    <column id="307" parent="279" name="media_type">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StateNumber>766</StateNumber>
       <StoredType>text|0s</StoredType>
       <TypeId>25</TypeId>
     </column>
-    <column id="306" parent="279" name="created_at">
+    <column id="308" parent="279" name="created_at">
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>6</Position>
@@ -4599,7 +4612,7 @@ false Zulu
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <foreign-key id="307" parent="279" name="posts_user_id_fkey">
+    <foreign-key id="309" parent="279" name="posts_user_id_fkey">
       <ColNames>user_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16433</ObjectId>
@@ -4608,7 +4621,7 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>16409</RefTableId>
     </foreign-key>
-    <index id="308" parent="279" name="posts_pkey">
+    <index id="310" parent="279" name="posts_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16431</ObjectId>
@@ -4617,14 +4630,14 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="309" parent="279" name="posts_pkey">
+    <key id="311" parent="279" name="posts_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16432</ObjectId>
       <Primary>1</Primary>
       <StateNumber>766</StateNumber>
       <UnderlyingIndexId>16431</UnderlyingIndexId>
     </key>
-    <column id="310" parent="280" name="id">
+    <column id="312" parent="280" name="id">
       <DefaultExpression>nextval(&apos;users_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -4633,37 +4646,49 @@ false Zulu
       <SequenceId>16408</SequenceId>
       <TypeId>23</TypeId>
     </column>
-    <column id="311" parent="280" name="name">
+    <column id="313" parent="280" name="name">
       <Position>2</Position>
       <StateNumber>766</StateNumber>
       <StoredType>varchar(255)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="312" parent="280" name="email">
+    <column id="314" parent="280" name="email">
       <Position>3</Position>
       <StateNumber>766</StateNumber>
       <StoredType>varchar(255)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="313" parent="280" name="nb_follows">
+    <column id="315" parent="280" name="nb_follows">
       <Position>5</Position>
       <StateNumber>766</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <column id="314" parent="280" name="nb_followers">
+    <column id="316" parent="280" name="nb_followers">
       <Position>6</Position>
       <StateNumber>766</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <column id="315" parent="280" name="bio">
+    <column id="317" parent="280" name="bio">
       <Position>7</Position>
       <StateNumber>777</StateNumber>
       <StoredType>text|0s</StoredType>
       <TypeId>25</TypeId>
     </column>
-    <index id="316" parent="280" name="users_pkey">
+    <column id="318" parent="280" name="password_hash">
+      <Position>8</Position>
+      <StateNumber>780</StateNumber>
+      <StoredType>text|0s</StoredType>
+      <TypeId>25</TypeId>
+    </column>
+    <column id="319" parent="280" name="profile_picture_path">
+      <Position>9</Position>
+      <StateNumber>780</StateNumber>
+      <StoredType>text|0s</StoredType>
+      <TypeId>25</TypeId>
+    </column>
+    <index id="320" parent="280" name="users_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16416</ObjectId>
@@ -4672,7 +4697,7 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="317" parent="280" name="users_pkey">
+    <key id="321" parent="280" name="users_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16417</ObjectId>
       <Primary>1</Primary>
