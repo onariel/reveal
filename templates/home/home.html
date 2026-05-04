@@ -16,246 +16,207 @@
         padding: 0 32px;
         z-index: 100;
     }
-
-    .nav-logo {
-        font-family: 'DM Serif Display', serif;
-        font-size: 24px;
-        color: var(--accent);
-    }
-
-    .nav-right {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .nav-user {
-        font-size: 13px;
-        color: var(--muted);
-    }
-
-    .nav-user span {
-        color: var(--text);
-        font-weight: 500;
-    }
-
+    .nav-logo { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-user { font-size: 13px; color: var(--muted); }
+    .nav-user span { color: var(--text); font-weight: 500; }
     .logout-btn {
-        padding: 7px 16px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        color: var(--muted);
-        font-size: 13px;
+        padding: 7px 16px; border: 1px solid var(--border); border-radius: 8px;
+        color: var(--muted); font-size: 13px; background: none;
+        font-family: 'DM Sans', sans-serif; cursor: pointer;
         transition: border-color 0.2s, color 0.2s;
-        cursor: pointer;
-        background: none;
-        font-family: 'DM Sans', sans-serif;
     }
-
-    .logout-btn:hover {
-        border-color: var(--error);
-        color: var(--error);
-    }
+    .logout-btn:hover { border-color: var(--error); color: var(--error); }
 
     .main {
         padding-top: 60px;
         min-height: 100vh;
         display: grid;
         grid-template-columns: 240px 1fr 280px;
-        gap: 0;
         max-width: 1200px;
         margin: 0 auto;
     }
 
-    /* Left sidebar */
+    /* Sidebar left */
     .sidebar-left {
         padding: 32px 24px;
         border-right: 1px solid var(--border);
-        position: sticky;
-        top: 60px;
-        height: calc(100vh - 60px);
-        overflow-y: auto;
+        position: sticky; top: 60px;
+        height: calc(100vh - 60px); overflow-y: auto;
     }
-
     .sidebar-title {
-        font-size: 10px;
-        font-weight: 600;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        color: var(--muted);
-        margin-bottom: 16px;
+        font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+        text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
     }
-
     .nav-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 11px 14px;
-        border-radius: 10px;
-        color: var(--muted);
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
+        display: flex; align-items: center; gap: 12px;
+        padding: 11px 14px; border-radius: 10px; color: var(--muted);
+        font-size: 14px; font-weight: 500;
         transition: background 0.15s, color 0.15s;
-        margin-bottom: 4px;
+        margin-bottom: 4px; text-decoration: none;
     }
-
-    .nav-item:hover, .nav-item.active {
-        background: var(--surface);
-        color: var(--text);
-    }
-
+    .nav-item:hover, .nav-item.active { background: var(--surface); color: var(--text); }
     .nav-item.active { color: var(--accent); }
-
-    .nav-icon {
-        width: 20px;
-        height: 20px;
-        opacity: 0.7;
-        flex-shrink: 0;
-    }
+    .nav-icon { width: 20px; height: 20px; flex-shrink: 0; }
 
     /* Feed */
-    .feed {
-        padding: 32px 40px;
-        border-right: 1px solid var(--border);
-    }
+    .feed { padding: 32px 40px; border-right: 1px solid var(--border); }
+    .feed-header { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 28px; }
 
-    .feed-header {
-        font-family: 'DM Serif Display', serif;
-        font-size: 22px;
-        margin-bottom: 28px;
+    /* Empty state */
+    .empty-state { text-align: center; padding: 80px 20px; color: var(--muted); }
+    .empty-state svg { width: 48px; height: 48px; margin: 0 auto 16px; opacity: 0.3; }
+    .empty-state p { font-size: 15px; margin-bottom: 20px; }
+    .empty-cta {
+        display: inline-block; padding: 10px 24px; background: var(--accent);
+        color: #0d0d0f; border-radius: 10px; font-size: 14px; font-weight: 600;
+        text-decoration: none; transition: background 0.2s;
     }
+    .empty-cta:hover { background: var(--accent-dim); color: #0d0d0f; }
 
-    /* Skeleton post cards */
+    /* Post card */
     .post-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        overflow: hidden;
-        margin-bottom: 20px;
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 16px; overflow: hidden; margin-bottom: 24px;
         animation: fadeIn 0.4s ease both;
     }
-
-    .post-card:nth-child(2) { animation-delay: 0.1s; }
-    .post-card:nth-child(3) { animation-delay: 0.2s; }
+    .post-card:nth-child(1) { animation-delay: 0.00s; }
+    .post-card:nth-child(2) { animation-delay: 0.05s; }
+    .post-card:nth-child(3) { animation-delay: 0.10s; }
+    .post-card:nth-child(4) { animation-delay: 0.15s; }
+    .post-card:nth-child(5) { animation-delay: 0.20s; }
 
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(16px); }
+        from { opacity: 0; transform: translateY(12px); }
         to   { opacity: 1; transform: translateY(0); }
     }
 
-    .post-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 16px 20px;
+    .post-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border); object-fit: cover; flex-shrink: 0; }
+    .avatar-letter {
+        width: 40px; height: 40px; border-radius: 50%;
+        background: rgba(232,197,71,0.15); display: flex; align-items: center;
+        justify-content: center; font-weight: 700; font-size: 16px;
+        color: var(--accent); text-transform: uppercase; flex-shrink: 0;
     }
+    .post-meta { flex: 1; min-width: 0; }
+    .post-author { font-weight: 600; font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .post-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-    .avatar-skel {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: var(--border);
-        flex-shrink: 0;
-        animation: shimmer 1.5s infinite;
-    }
+    .post-media { width: 100%; display: block; max-height: 600px; object-fit: cover; background: var(--bg); }
 
-    .text-skel {
-        height: 10px;
-        border-radius: 6px;
-        background: var(--border);
-        animation: shimmer 1.5s infinite;
-    }
+    .post-body { padding: 16px 20px; }
+    .post-caption { font-size: 14px; line-height: 1.6; color: var(--text); margin-bottom: 14px; white-space: pre-wrap; word-break: break-word; }
 
-    .text-skel.short  { width: 100px; }
-    .text-skel.xshort { width: 60px; margin-top: 6px; }
-
-    .media-skel {
-        width: 100%;
-        aspect-ratio: 4/3;
-        background: var(--border);
-        animation: shimmer 1.5s infinite;
-    }
-
+    /* Action bar */
     .post-actions {
-        padding: 16px 20px;
-        display: flex;
-        gap: 20px;
+        display: flex; gap: 20px;
+        padding-top: 12px; border-top: 1px solid var(--border);
     }
 
-    .action-skel {
-        height: 10px;
-        width: 50px;
-        border-radius: 6px;
-        background: var(--border);
-        animation: shimmer 1.5s infinite;
+    .action {
+        display: flex; align-items: center; gap: 6px;
+        color: var(--muted); font-size: 13px; font-weight: 500;
+        cursor: pointer; transition: color 0.2s;
+        background: none; border: none;
+        font-family: 'DM Sans', sans-serif; padding: 0;
     }
+    .action svg { width: 18px; height: 18px; transition: transform 0.15s; }
+    .action:hover { color: var(--text); }
 
-    @keyframes shimmer {
-        0%, 100% { opacity: 0.4; }
-        50%       { opacity: 0.8; }
+    /* Liked state */
+    .action.liked { color: #e05c5c; }
+    .action.liked svg { fill: #e05c5c; stroke: #e05c5c; }
+    .action.liked:hover { color: #c04040; }
+
+    /* Pop animation when liking */
+    @keyframes pop {
+        0%   { transform: scale(1); }
+        40%  { transform: scale(1.35); }
+        100% { transform: scale(1); }
     }
+    .action.pop svg { animation: pop 0.25s ease; }
 
-    /* Placeholder badge */
-    .placeholder-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: rgba(232,197,71,0.1);
-        border: 1px solid rgba(232,197,71,0.25);
-        color: var(--accent);
-        font-size: 12px;
-        font-weight: 500;
-        padding: 6px 12px;
-        border-radius: 99px;
-        margin-bottom: 24px;
+    /* Comments section */
+    .comments-section {
+        display: none;  /* hidden until toggled */
+        border-top: 1px solid var(--border);
+        padding: 0 20px;
     }
+    .comments-section.open { display: block; }
 
-    /* Right sidebar */
+    .comments-list { padding: 14px 0 4px; display: flex; flex-direction: column; gap: 12px; }
+
+    .comment {
+        display: flex; gap: 10px; animation: fadeIn 0.2s ease both;
+    }
+    .comment-avatar {
+        width: 30px; height: 30px; border-radius: 50%;
+        background: rgba(232,197,71,0.15);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 700; color: var(--accent);
+        text-transform: uppercase; flex-shrink: 0;
+    }
+    .comment-body { flex: 1; }
+    .comment-author { font-size: 13px; font-weight: 600; color: var(--text); }
+    .comment-text { font-size: 13px; color: var(--muted); margin-top: 2px; line-height: 1.5; word-break: break-word; }
+
+    .no-comments { font-size: 13px; color: var(--muted); padding: 14px 0 4px; }
+
+    /* Comment input */
+    .comment-form {
+        display: flex; gap: 10px; align-items: center;
+        padding: 12px 0 16px;
+    }
+    .comment-input {
+        flex: 1; padding: 10px 14px;
+        background: var(--bg); border: 1px solid var(--border);
+        border-radius: 20px; color: var(--text);
+        font-family: 'DM Sans', sans-serif; font-size: 13px;
+        outline: none; transition: border-color 0.2s;
+    }
+    .comment-input:focus { border-color: var(--accent); }
+    .comment-input::placeholder { color: var(--muted); }
+    .comment-submit {
+        padding: 9px 18px; background: var(--accent); color: #0d0d0f;
+        border: none; border-radius: 20px; font-family: 'DM Sans', sans-serif;
+        font-size: 13px; font-weight: 600; cursor: pointer;
+        transition: background 0.2s, opacity 0.2s;
+        white-space: nowrap;
+    }
+    .comment-submit:hover { background: var(--accent-dim); }
+    .comment-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Sidebar right */
     .sidebar-right {
-        padding: 32px 24px;
-        position: sticky;
-        top: 60px;
-        height: calc(100vh - 60px);
-        overflow-y: auto;
+        padding: 32px 24px; position: sticky; top: 60px;
+        height: calc(100vh - 60px); overflow-y: auto;
     }
-
     .suggestions-title {
-        font-size: 10px;
-        font-weight: 600;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        color: var(--muted);
-        margin-bottom: 20px;
+        font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+        text-transform: uppercase; color: var(--muted); margin-bottom: 20px;
     }
-
-    .suggestion {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 20px;
-    }
-
+    .suggestion { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .skel { background: var(--border); border-radius: 6px; animation: shimmer 1.5s infinite; }
+    .skel-avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; }
+    .skel-line { height: 10px; }
+    .skel-short { width: 90px; }
+    .skel-xshort { width: 60px; margin-top: 6px; }
+    @keyframes shimmer { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
     .follow-btn {
-        margin-left: auto;
-        padding: 6px 14px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        color: var(--accent);
-        font-size: 12px;
-        font-weight: 600;
-        background: none;
-        cursor: pointer;
-        font-family: 'DM Sans', sans-serif;
-        transition: background 0.2s;
-        flex-shrink: 0;
+        margin-left: auto; padding: 6px 14px; border: 1px solid var(--border);
+        border-radius: 8px; color: var(--accent); font-size: 12px; font-weight: 600;
+        background: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
+        transition: background 0.2s; flex-shrink: 0;
     }
-
     .follow-btn:hover { background: rgba(232,197,71,0.08); }
+
+    @media (max-width: 900px) { .main { grid-template-columns: 200px 1fr; } .sidebar-right { display: none; } }
+    @media (max-width: 600px) { .main { grid-template-columns: 1fr; } .sidebar-left { display: none; } .feed { padding: 20px 16px; } }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Navbar -->
 <nav class="navbar">
     <div class="nav-logo">Pixly</div>
     <div class="nav-right">
@@ -266,103 +227,136 @@
 
 <div class="main">
 
-    <!-- Left Sidebar -->
     <aside class="sidebar-left">
         <p class="sidebar-title">Menu</p>
-
-        <div class="nav-item active">
+        <a href="/home" class="nav-item active">
             <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M13 5v14" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M13 5v14"/>
             </svg>
             Home
-        </div>
-        <div class="nav-item">
+        </a>
+        <a href="#" class="nav-item">
             <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/>
             </svg>
             Explore
-        </div>
-        <div class="nav-item">
+        </a>
+        <a href="/posts/create" class="nav-item">
             <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
             </svg>
             New Post
-        </div>
-        <div class="nav-item">
+        </a>
+        <a href="#" class="nav-item">
             <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A7 7 0 1112 19a7 7 0 01-6.879-1.196z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A7 7 0 1112 19a7 7 0 01-6.879-1.196z"/>
             </svg>
             Profile
-        </div>
+        </a>
     </aside>
 
-    <!-- Feed -->
     <main class="feed">
-        <div class="placeholder-badge">
-            🚧 Coming soon — posts will appear here
-        </div>
-
         <h2 class="feed-header">Your Feed</h2>
 
-        <!-- Skeleton post 1 -->
-        <div class="post-card">
-            <div class="post-header">
-                <div class="avatar-skel"></div>
-                <div>
-                    <div class="text-skel short"></div>
-                    <div class="text-skel xshort"></div>
-                </div>
-            </div>
-            <div class="media-skel"></div>
-            <div class="post-actions">
-                <div class="action-skel"></div>
-                <div class="action-skel"></div>
-            </div>
-        </div>
+        {% if posts %}
+            {% for post in posts %}
+            {# Check if the current user has already liked this post #}
+            {% set already_liked = post['id'] in liked_ids %}
 
-        <!-- Skeleton post 2 -->
-        <div class="post-card">
-            <div class="post-header">
-                <div class="avatar-skel"></div>
-                <div>
-                    <div class="text-skel short"></div>
-                    <div class="text-skel xshort"></div>
-                </div>
-            </div>
-            <div class="media-skel"></div>
-            <div class="post-actions">
-                <div class="action-skel"></div>
-                <div class="action-skel"></div>
-            </div>
-        </div>
+            <article class="post-card" data-post-id="{{ post['id'] }}">
 
-        <!-- Skeleton post 3 -->
-        <div class="post-card">
-            <div class="post-header">
-                <div class="avatar-skel"></div>
-                <div>
-                    <div class="text-skel short"></div>
-                    <div class="text-skel xshort"></div>
+                <div class="post-header">
+                    {% if post['profile_picture_path'] %}
+                        <img class="avatar"
+                             src="{{ url_for('static', filename=post['profile_picture_path']) }}"
+                             alt="{{ post['username'] }}">
+                    {% else %}
+                        <div class="avatar-letter">{{ post['username'][0] }}</div>
+                    {% endif %}
+                    <div class="post-meta">
+                        <div class="post-author">{{ post['username'] }}</div>
+                        <div class="post-date">{{ post['created_at'].strftime('%B %d, %Y · %H:%M') }}</div>
+                    </div>
                 </div>
+
+                {% if post['media_type'] == 'image' %}
+                    <img class="post-media"
+                         src="{{ url_for('static', filename=post['media_path']) }}"
+                         alt="Post by {{ post['username'] }}" loading="lazy">
+                {% elif post['media_type'] == 'video' %}
+                    <video class="post-media"
+                           src="{{ url_for('static', filename=post['media_path']) }}"
+                           controls preload="metadata"></video>
+                {% endif %}
+
+                <div class="post-body">
+                    {% if post['caption'] %}
+                    <p class="post-caption">{{ post['caption'] }}</p>
+                    {% endif %}
+
+                    <div class="post-actions">
+                        <!-- Like button: class 'liked' is set by Jinja on page load -->
+                        <button class="action like-btn {% if already_liked %}liked{% endif %}"
+                                data-post-id="{{ post['id'] }}">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z"/>
+                            </svg>
+                            <span class="like-count">{{ post['like_count'] }}</span>
+                        </button>
+
+                        <!-- Comment toggle button -->
+                        <button class="action comment-toggle-btn"
+                                data-post-id="{{ post['id'] }}">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                            </svg>
+                            <span class="comment-count">{{ post['comment_count'] }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Comments section (hidden by default, toggled by JS) -->
+                <div class="comments-section" id="comments-{{ post['id'] }}">
+                    <div class="comments-list" id="comments-list-{{ post['id'] }}">
+                        <!-- Loaded by JS on first open -->
+                    </div>
+                    <div class="comment-form">
+                        <input
+                            class="comment-input"
+                            type="text"
+                            placeholder="Add a comment..."
+                            maxlength="1000"
+                            data-post-id="{{ post['id'] }}"
+                        >
+                        <button class="comment-submit" data-post-id="{{ post['id'] }}">Post</button>
+                    </div>
+                </div>
+
+            </article>
+            {% endfor %}
+
+        {% else %}
+            <div class="empty-state">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5"/>
+                </svg>
+                <p>No posts yet. Be the first to share something!</p>
+                <a href="/posts/create" class="empty-cta">Create a post</a>
             </div>
-            <div class="media-skel"></div>
-            <div class="post-actions">
-                <div class="action-skel"></div>
-                <div class="action-skel"></div>
-            </div>
-        </div>
+        {% endif %}
     </main>
 
-    <!-- Right Sidebar -->
     <aside class="sidebar-right">
         <p class="suggestions-title">Suggested for you</p>
-
         {% for i in range(4) %}
         <div class="suggestion">
-            <div class="avatar-skel"></div>
+            <div class="skel skel-avatar"></div>
             <div>
-                <div class="text-skel short"></div>
-                <div class="text-skel xshort"></div>
+                <div class="skel skel-line skel-short"></div>
+                <div class="skel skel-line skel-xshort"></div>
             </div>
             <button class="follow-btn">Follow</button>
         </div>
@@ -370,4 +364,148 @@
     </aside>
 
 </div>
+
+<script>
+// ─────────────────────────────────────────────
+// Utility: build a comment HTML element
+// ─────────────────────────────────────────────
+function buildCommentEl(comment) {
+    const div = document.createElement('div');
+    div.className = 'comment';
+    div.innerHTML = `
+        <div class="comment-avatar">${comment.username[0].toUpperCase()}</div>
+        <div class="comment-body">
+            <div class="comment-author">${comment.username}</div>
+            <div class="comment-text">${comment.text}</div>
+        </div>
+    `;
+    return div;
+}
+
+// ─────────────────────────────────────────────
+// LIKES
+// Each like button sends a POST to /posts/<id>/like
+// and updates the count + heart colour from the JSON response.
+// ─────────────────────────────────────────────
+document.querySelectorAll('.like-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const postId = btn.dataset.postId;
+
+        // Optimistic update — feel instant to the user
+        const wasLiked = btn.classList.contains('liked');
+        const countEl  = btn.querySelector('.like-count');
+        btn.classList.toggle('liked', !wasLiked);
+        countEl.textContent = parseInt(countEl.textContent) + (wasLiked ? -1 : 1);
+
+        // Trigger the pop animation
+        btn.classList.remove('pop');
+        void btn.offsetWidth; // force reflow so animation restarts
+        btn.classList.add('pop');
+
+        try {
+            const res  = await fetch(`/posts/${postId}/like`, { method: 'POST' });
+            const data = await res.json();
+
+            // Sync with the server's actual values
+            btn.classList.toggle('liked', data.liked);
+            countEl.textContent = data.like_count;
+        } catch {
+            // If the request failed, revert the optimistic update
+            btn.classList.toggle('liked', wasLiked);
+            countEl.textContent = parseInt(countEl.textContent) + (wasLiked ? 1 : -1);
+        }
+    });
+});
+
+// ─────────────────────────────────────────────
+// COMMENTS
+// Clicking the comment button toggles the section open/closed.
+// On the first open, comments are fetched from the server.
+// ─────────────────────────────────────────────
+document.querySelectorAll('.comment-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const postId  = btn.dataset.postId;
+        const section = document.getElementById(`comments-${postId}`);
+        const list    = document.getElementById(`comments-list-${postId}`);
+        const isOpen  = section.classList.contains('open');
+
+        // Toggle open/close
+        section.classList.toggle('open', !isOpen);
+
+        // Only fetch from server on the FIRST open (list is still empty)
+        if (!isOpen && list.children.length === 0) {
+            try {
+                const res      = await fetch(`/posts/${postId}/comments`);
+                const comments = await res.json();
+
+                if (comments.length === 0) {
+                    list.innerHTML = '<p class="no-comments">No comments yet. Be the first!</p>';
+                } else {
+                    comments.forEach(c => list.appendChild(buildCommentEl(c)));
+                }
+            } catch {
+                list.innerHTML = '<p class="no-comments">Could not load comments.</p>';
+            }
+        }
+    });
+});
+
+// ─────────────────────────────────────────────
+// SUBMITTING A COMMENT
+// Sends the text as JSON, then appends the returned
+// comment to the list without reloading the page.
+// ─────────────────────────────────────────────
+document.querySelectorAll('.comment-submit').forEach(submitBtn => {
+    submitBtn.addEventListener('click', async () => {
+        const postId  = submitBtn.dataset.postId;
+        const input   = document.querySelector(`.comment-input[data-post-id="${postId}"]`);
+        const list    = document.getElementById(`comments-list-${postId}`);
+        const countEl = document.querySelector(`.comment-toggle-btn[data-post-id="${postId}"] .comment-count`);
+        const text    = input.value.trim();
+
+        if (!text) return;
+
+        submitBtn.disabled = true;
+
+        try {
+            const res  = await fetch(`/posts/${postId}/comments`, {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ text })
+            });
+
+            if (!res.ok) return;
+
+            const comment = await res.json();
+
+            // Remove the "no comments" placeholder if present
+            const placeholder = list.querySelector('.no-comments');
+            if (placeholder) placeholder.remove();
+
+            // Append the new comment and clear the input
+            list.appendChild(buildCommentEl(comment));
+            input.value = '';
+
+            // Update the comment count in the action bar
+            countEl.textContent = parseInt(countEl.textContent) + 1;
+
+            // Scroll the new comment into view
+            list.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        } finally {
+            submitBtn.disabled = false;
+        }
+    });
+});
+
+// Allow pressing Enter to submit a comment
+document.querySelectorAll('.comment-input').forEach(input => {
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+            const postId = input.dataset.postId;
+            document.querySelector(`.comment-submit[data-post-id="${postId}"]`).click();
+        }
+    });
+});
+</script>
 {% endblock %}

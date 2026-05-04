@@ -1,10 +1,421 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block title %}New Post — Pixly{% endblock %}
 
-</body>
-</html>
+{% block head %}
+<style>
+    .navbar {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        height: 60px;
+        background: rgba(13,13,15,0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 32px;
+        z-index: 100;
+    }
+
+    .nav-logo {
+        font-family: 'DM Serif Display', serif;
+        font-size: 24px;
+        color: var(--accent);
+    }
+
+    .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 14px;
+        transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text); }
+
+    /* Page layout */
+    .page {
+        padding-top: 60px;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-bottom: 60px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 780px;
+        padding: 48px 24px 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+        animation: slideUp 0.45s ease both;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Preview panel */
+    .preview-panel {
+        position: sticky;
+        top: 88px;
+    }
+
+    .preview-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 14px;
+    }
+
+    .preview-box {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 13px;
+        position: relative;
+    }
+
+    .preview-box svg {
+        width: 40px;
+        height: 40px;
+        opacity: 0.3;
+    }
+
+    #preview-img {
+        display: none;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        inset: 0;
+    }
+
+    #preview-video {
+        display: none;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        inset: 0;
+    }
+
+    /* Form panel */
+    .form-panel h1 {
+        font-family: 'DM Serif Display', serif;
+        font-size: 28px;
+        margin-bottom: 6px;
+    }
+
+    .form-panel .subtitle {
+        color: var(--muted);
+        font-size: 14px;
+        margin-bottom: 32px;
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+    }
+
+    /* File upload zone */
+    .upload-zone {
+        border: 2px dashed var(--border);
+        border-radius: var(--radius);
+        padding: 28px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.2s, background 0.2s;
+        position: relative;
+    }
+
+    .upload-zone:hover,
+    .upload-zone.dragover {
+        border-color: var(--accent);
+        background: rgba(232,197,71,0.04);
+    }
+
+    .upload-zone input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+    }
+
+    .upload-icon {
+        width: 32px;
+        height: 32px;
+        color: var(--muted);
+        margin: 0 auto 10px;
+    }
+
+    .upload-zone p {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .upload-zone .file-name {
+        display: none;
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 500;
+        margin-top: 6px;
+        word-break: break-all;
+    }
+
+    .upload-hint {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 8px;
+        opacity: 0.7;
+    }
+
+    /* Caption textarea */
+    textarea {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 15px;
+        resize: vertical;
+        min-height: 110px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        outline: none;
+        line-height: 1.5;
+    }
+
+    textarea:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(232,197,71,0.1);
+    }
+
+    textarea::placeholder { color: var(--muted); }
+
+    .char-count {
+        text-align: right;
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 6px;
+    }
+
+    .char-count.over { color: var(--error); }
+
+    /* Submit button */
+    .btn {
+        width: 100%;
+        padding: 15px;
+        background: var(--accent);
+        color: #0d0d0f;
+        border: none;
+        border-radius: var(--radius);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn:hover { background: var(--accent-dim); }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Error */
+    .error-msg {
+        background: rgba(224,92,92,0.1);
+        border: 1px solid rgba(224,92,92,0.3);
+        color: var(--error);
+        padding: 12px 16px;
+        border-radius: var(--radius);
+        font-size: 13px;
+        margin-bottom: 24px;
+    }
+
+    @media (max-width: 680px) {
+        .container {
+            grid-template-columns: 1fr;
+        }
+        .preview-panel {
+            position: static;
+            order: -1;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<nav class="navbar">
+    <div class="nav-logo">Pixly</div>
+    <a href="/home" class="nav-back">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Back to feed
+    </a>
+</nav>
+
+<div class="page">
+    <div class="container">
+
+        <!-- Left: live preview -->
+        <div class="preview-panel">
+            <p class="preview-label">Preview</p>
+            <div class="preview-box">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5M21 3.75H3A.75.75 0 002.25 4.5v15"/>
+                </svg>
+                <span>Your media will appear here</span>
+                <img id="preview-img" alt="Preview">
+                <video id="preview-video" autoplay muted loop playsinline></video>
+            </div>
+        </div>
+
+        <!-- Right: form -->
+        <div class="form-panel">
+            <h1>New Post</h1>
+            <p class="subtitle">Share a photo or video with your followers</p>
+
+            {% if error %}
+            <div class="error-msg">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST" action="/posts/create" enctype="multipart/form-data" id="post-form">
+
+                <div class="form-group">
+                    <label>Media</label>
+                    <div class="upload-zone" id="upload-zone">
+                        <input
+                            type="file"
+                            name="media"
+                            id="media-input"
+                            accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/quicktime,video/avi,video/webm"
+                            required
+                        >
+                        <svg class="upload-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+                        </svg>
+                        <p>Click or drag & drop your file here</p>
+                        <p class="file-name" id="file-name"></p>
+                        <p class="upload-hint">Images: jpg, png, gif, webp &nbsp;·&nbsp; Videos: mp4, mov, avi, webm</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="caption">Caption <span style="opacity:0.4;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+                    <textarea
+                        name="caption"
+                        id="caption"
+                        placeholder="Write a caption..."
+                        maxlength="2200"
+                    ></textarea>
+                    <p class="char-count"><span id="char-num">0</span> / 2200</p>
+                </div>
+
+                <button type="submit" class="btn" id="submit-btn">Share Post</button>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const mediaInput  = document.getElementById('media-input');
+    const uploadZone  = document.getElementById('upload-zone');
+    const fileNameEl  = document.getElementById('file-name');
+    const previewImg  = document.getElementById('preview-img');
+    const previewVid  = document.getElementById('preview-video');
+    const captionEl   = document.getElementById('caption');
+    const charNum     = document.getElementById('char-num');
+    const charCount   = document.querySelector('.char-count');
+    const submitBtn   = document.getElementById('submit-btn');
+
+    // --- File selection → live preview ---
+    mediaInput.addEventListener('change', () => {
+        const file = mediaInput.files[0];
+        if (!file) return;
+
+        fileNameEl.textContent = file.name;
+        fileNameEl.style.display = 'block';
+
+        const url = URL.createObjectURL(file);
+
+        if (file.type.startsWith('image/')) {
+            previewImg.src = url;
+            previewImg.style.display = 'block';
+            previewVid.style.display = 'none';
+            previewVid.src = '';
+        } else if (file.type.startsWith('video/')) {
+            previewVid.src = url;
+            previewVid.style.display = 'block';
+            previewImg.style.display = 'none';
+            previewImg.src = '';
+        }
+    });
+
+    // --- Drag & drop ---
+    uploadZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+    });
+
+    uploadZone.addEventListener('dragleave', () => {
+        uploadZone.classList.remove('dragover');
+    });
+
+    uploadZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+            mediaInput.files = e.dataTransfer.files;
+            mediaInput.dispatchEvent(new Event('change'));
+        }
+    });
+
+    // --- Caption character counter ---
+    captionEl.addEventListener('input', () => {
+        const len = captionEl.value.length;
+        charNum.textContent = len;
+        charCount.classList.toggle('over', len >= 2200);
+    });
+
+    // --- Disable submit while uploading ---
+    document.getElementById('post-form').addEventListener('submit', () => {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Uploading...';
+    });
+</script>
+{% endblock %}
