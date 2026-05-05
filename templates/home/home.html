@@ -4,17 +4,11 @@
 {% block head %}
 <style>
     .navbar {
-        position: fixed;
-        top: 0; left: 0; right: 0;
-        height: 60px;
-        background: rgba(13,13,15,0.85);
-        backdrop-filter: blur(12px);
+        position: fixed; top: 0; left: 0; right: 0; height: 60px;
+        background: rgba(13,13,15,0.85); backdrop-filter: blur(12px);
         border-bottom: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 32px;
-        z-index: 100;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 32px; z-index: 100;
     }
     .nav-logo { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--accent); }
     .nav-right { display: flex; align-items: center; gap: 20px; }
@@ -29,41 +23,31 @@
     .logout-btn:hover { border-color: var(--error); color: var(--error); }
 
     .main {
-        padding-top: 60px;
-        min-height: 100vh;
-        display: grid;
-        grid-template-columns: 240px 1fr 280px;
-        max-width: 1200px;
-        margin: 0 auto;
+        padding-top: 60px; min-height: 100vh;
+        display: grid; grid-template-columns: 240px 1fr 280px;
+        max-width: 1200px; margin: 0 auto;
     }
 
-    /* Sidebar left */
     .sidebar-left {
-        padding: 32px 24px;
-        border-right: 1px solid var(--border);
-        position: sticky; top: 60px;
-        height: calc(100vh - 60px); overflow-y: auto;
+        padding: 32px 24px; border-right: 1px solid var(--border);
+        position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto;
     }
     .sidebar-title {
         font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
         text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
     }
     .nav-item {
-        display: flex; align-items: center; gap: 12px;
-        padding: 11px 14px; border-radius: 10px; color: var(--muted);
-        font-size: 14px; font-weight: 500;
-        transition: background 0.15s, color 0.15s;
-        margin-bottom: 4px; text-decoration: none;
+        display: flex; align-items: center; gap: 12px; padding: 11px 14px;
+        border-radius: 10px; color: var(--muted); font-size: 14px; font-weight: 500;
+        transition: background 0.15s, color 0.15s; margin-bottom: 4px; text-decoration: none;
     }
     .nav-item:hover, .nav-item.active { background: var(--surface); color: var(--text); }
     .nav-item.active { color: var(--accent); }
     .nav-icon { width: 20px; height: 20px; flex-shrink: 0; }
 
-    /* Feed */
     .feed { padding: 32px 40px; border-right: 1px solid var(--border); }
     .feed-header { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 28px; }
 
-    /* Empty state */
     .empty-state { text-align: center; padding: 80px 20px; color: var(--muted); }
     .empty-state svg { width: 48px; height: 48px; margin: 0 auto 16px; opacity: 0.3; }
     .empty-state p { font-size: 15px; margin-bottom: 20px; }
@@ -85,94 +69,118 @@
     .post-card:nth-child(3) { animation-delay: 0.10s; }
     .post-card:nth-child(4) { animation-delay: 0.15s; }
     .post-card:nth-child(5) { animation-delay: 0.20s; }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(12px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
     .post-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; }
     .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--border); object-fit: cover; flex-shrink: 0; }
     .avatar-letter {
-        width: 40px; height: 40px; border-radius: 50%;
-        background: rgba(232,197,71,0.15); display: flex; align-items: center;
-        justify-content: center; font-weight: 700; font-size: 16px;
-        color: var(--accent); text-transform: uppercase; flex-shrink: 0;
+        width: 40px; height: 40px; border-radius: 50%; background: rgba(232,197,71,0.15);
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 700; font-size: 16px; color: var(--accent); text-transform: uppercase; flex-shrink: 0;
     }
     .post-meta { flex: 1; min-width: 0; }
-    .post-author { font-weight: 600; font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .post-author { font-weight: 600; font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: none; }
+    .post-author:hover { text-decoration: underline; color: var(--accent); }
     .post-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
     .post-media { width: 100%; display: block; max-height: 600px; object-fit: cover; background: var(--bg); }
-
     .post-body { padding: 16px 20px; }
     .post-caption { font-size: 14px; line-height: 1.6; color: var(--text); margin-bottom: 14px; white-space: pre-wrap; word-break: break-word; }
 
     /* Action bar */
-    .post-actions {
-        display: flex; gap: 20px;
-        padding-top: 12px; border-top: 1px solid var(--border);
-    }
-
+    .post-actions { display: flex; gap: 20px; padding-top: 12px; border-top: 1px solid var(--border); }
     .action {
-        display: flex; align-items: center; gap: 6px;
-        color: var(--muted); font-size: 13px; font-weight: 500;
-        cursor: pointer; transition: color 0.2s;
-        background: none; border: none;
-        font-family: 'DM Sans', sans-serif; padding: 0;
+        display: flex; align-items: center; gap: 6px; color: var(--muted);
+        font-size: 13px; font-weight: 500; cursor: pointer; transition: color 0.2s;
+        background: none; border: none; font-family: 'DM Sans', sans-serif; padding: 0;
     }
-    .action svg { width: 18px; height: 18px; transition: transform 0.15s; }
+    .action svg { width: 18px; height: 18px; }
     .action:hover { color: var(--text); }
-
-    /* Liked state */
     .action.liked { color: #e05c5c; }
     .action.liked svg { fill: #e05c5c; stroke: #e05c5c; }
-    .action.liked:hover { color: #c04040; }
-
-    /* Pop animation when liking */
-    @keyframes pop {
-        0%   { transform: scale(1); }
-        40%  { transform: scale(1.35); }
-        100% { transform: scale(1); }
-    }
+    @keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 100% { transform: scale(1); } }
     .action.pop svg { animation: pop 0.25s ease; }
 
     /* Comments section */
-    .comments-section {
-        display: none;  /* hidden until toggled */
-        border-top: 1px solid var(--border);
-        padding: 0 20px;
-    }
+    .comments-section { display: none; border-top: 1px solid var(--border); padding: 0 20px; }
     .comments-section.open { display: block; }
+    .comments-list { padding: 14px 0 4px; display: flex; flex-direction: column; gap: 14px; }
+    .no-comments { font-size: 13px; color: var(--muted); padding: 14px 0 4px; }
 
-    .comments-list { padding: 14px 0 4px; display: flex; flex-direction: column; gap: 12px; }
-
-    .comment {
-        display: flex; gap: 10px; animation: fadeIn 0.2s ease both;
-    }
+    /* Top-level comment */
+    .comment { display: flex; gap: 10px; animation: fadeIn 0.2s ease both; }
     .comment-avatar {
-        width: 30px; height: 30px; border-radius: 50%;
-        background: rgba(232,197,71,0.15);
+        width: 30px; height: 30px; border-radius: 50%; background: rgba(232,197,71,0.15);
         display: flex; align-items: center; justify-content: center;
         font-size: 12px; font-weight: 700; color: var(--accent);
         text-transform: uppercase; flex-shrink: 0;
     }
-    .comment-body { flex: 1; }
+    .comment-body { flex: 1; min-width: 0; }
+    .comment-header { display: flex; align-items: baseline; gap: 8px; }
     .comment-author { font-size: 13px; font-weight: 600; color: var(--text); }
-    .comment-text { font-size: 13px; color: var(--muted); margin-top: 2px; line-height: 1.5; word-break: break-word; }
+    .comment-date { font-size: 11px; color: var(--muted); }
+    .comment-text { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; word-break: break-word; }
 
-    .no-comments { font-size: 13px; color: var(--muted); padding: 14px 0 4px; }
+    /* Reply button under each comment */
+    .reply-toggle {
+        background: none; border: none; padding: 0; margin-top: 6px;
+        font-size: 12px; font-weight: 600; color: var(--muted);
+        cursor: pointer; font-family: 'DM Sans', sans-serif;
+        transition: color 0.2s;
+    }
+    .reply-toggle:hover { color: var(--accent); }
 
-    /* Comment input */
+    /* Inline reply input (hidden until reply-toggle is clicked) */
+    .reply-form {
+        display: none; margin-top: 10px;
+        flex-direction: row; gap: 8px; align-items: center;
+    }
+    .reply-form.open { display: flex; }
+    .reply-input {
+        flex: 1; padding: 8px 12px; background: var(--bg);
+        border: 1px solid var(--border); border-radius: 16px;
+        color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px;
+        outline: none; transition: border-color 0.2s;
+    }
+    .reply-input:focus { border-color: var(--accent); }
+    .reply-input::placeholder { color: var(--muted); }
+    .reply-submit {
+        padding: 7px 14px; background: var(--accent); color: #0d0d0f;
+        border: none; border-radius: 16px; font-family: 'DM Sans', sans-serif;
+        font-size: 12px; font-weight: 600; cursor: pointer;
+        transition: background 0.2s, opacity 0.2s; white-space: nowrap;
+    }
+    .reply-submit:hover { background: var(--accent-dim); }
+    .reply-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Nested replies — indented with a left border */
+    .replies-list {
+        margin-top: 10px; padding-left: 14px;
+        border-left: 2px solid var(--border);
+        display: flex; flex-direction: column; gap: 10px;
+    }
+
+    /* Reply row — same structure as comment but smaller avatar */
+    .reply { display: flex; gap: 8px; animation: fadeIn 0.2s ease both; }
+    .reply-avatar {
+        width: 24px; height: 24px; border-radius: 50%; background: rgba(232,197,71,0.1);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 10px; font-weight: 700; color: var(--accent);
+        text-transform: uppercase; flex-shrink: 0;
+    }
+    .reply-body { flex: 1; min-width: 0; }
+    .reply-author { font-size: 12px; font-weight: 600; color: var(--text); }
+    .reply-date { font-size: 11px; color: var(--muted); margin-left: 6px; }
+    .reply-text { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.5; word-break: break-word; }
+
+    /* Bottom comment input */
     .comment-form {
-        display: flex; gap: 10px; align-items: center;
-        padding: 12px 0 16px;
+        display: flex; gap: 10px; align-items: center; padding: 12px 0 16px;
     }
     .comment-input {
-        flex: 1; padding: 10px 14px;
-        background: var(--bg); border: 1px solid var(--border);
-        border-radius: 20px; color: var(--text);
-        font-family: 'DM Sans', sans-serif; font-size: 13px;
+        flex: 1; padding: 10px 14px; background: var(--bg);
+        border: 1px solid var(--border); border-radius: 20px;
+        color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px;
         outline: none; transition: border-color 0.2s;
     }
     .comment-input:focus { border-color: var(--accent); }
@@ -181,13 +189,12 @@
         padding: 9px 18px; background: var(--accent); color: #0d0d0f;
         border: none; border-radius: 20px; font-family: 'DM Sans', sans-serif;
         font-size: 13px; font-weight: 600; cursor: pointer;
-        transition: background 0.2s, opacity 0.2s;
-        white-space: nowrap;
+        transition: background 0.2s, opacity 0.2s; white-space: nowrap;
     }
     .comment-submit:hover { background: var(--accent-dim); }
     .comment-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* Sidebar right */
+    /* Right sidebar */
     .sidebar-right {
         padding: 32px 24px; position: sticky; top: 60px;
         height: calc(100vh - 60px); overflow-y: auto;
@@ -210,6 +217,19 @@
         transition: background 0.2s; flex-shrink: 0;
     }
     .follow-btn:hover { background: rgba(232,197,71,0.08); }
+
+    /* Follow button on post cards */
+    .post-follow-btn {
+        margin-left: auto; padding: 5px 14px;
+        border: 1px solid var(--border); border-radius: 8px;
+        font-size: 12px; font-weight: 600; cursor: pointer;
+        font-family: 'DM Sans', sans-serif; background: none;
+        transition: all 0.2s; flex-shrink: 0;
+        color: var(--accent);
+    }
+    .post-follow-btn:hover { background: rgba(232,197,71,0.08); }
+    .post-follow-btn.following { color: var(--muted); }
+    .post-follow-btn.following:hover { border-color: var(--error); color: var(--error); }
 
     @media (max-width: 900px) { .main { grid-template-columns: 200px 1fr; } .sidebar-right { display: none; } }
     @media (max-width: 600px) { .main { grid-template-columns: 1fr; } .sidebar-left { display: none; } .feed { padding: 20px 16px; } }
@@ -260,76 +280,53 @@
 
         {% if posts %}
             {% for post in posts %}
-            {# Check if the current user has already liked this post #}
             {% set already_liked = post['id'] in liked_ids %}
-
             <article class="post-card" data-post-id="{{ post['id'] }}">
 
                 <div class="post-header">
                     {% if post['profile_picture_path'] %}
-                        <img class="avatar"
-                             src="{{ url_for('static', filename=post['profile_picture_path']) }}"
-                             alt="{{ post['username'] }}">
+                        <img class="avatar" src="{{ url_for('static', filename=post['profile_picture_path']) }}" alt="{{ post['username'] }}">
                     {% else %}
                         <div class="avatar-letter">{{ post['username'][0] }}</div>
                     {% endif %}
                     <div class="post-meta">
-                        <div class="post-author">{{ post['username'] }}</div>
+                        <a href="/users/{{ post['username'] }}" class="post-author">{{ post['username'] }}</a>
                         <div class="post-date">{{ post['created_at'].strftime('%B %d, %Y · %H:%M') }}</div>
                     </div>
                 </div>
 
                 {% if post['media_type'] == 'image' %}
-                    <img class="post-media"
-                         src="{{ url_for('static', filename=post['media_path']) }}"
-                         alt="Post by {{ post['username'] }}" loading="lazy">
+                    <img class="post-media" src="{{ url_for('static', filename=post['media_path']) }}" alt="Post by {{ post['username'] }}" loading="lazy">
                 {% elif post['media_type'] == 'video' %}
-                    <video class="post-media"
-                           src="{{ url_for('static', filename=post['media_path']) }}"
-                           controls preload="metadata"></video>
+                    <video class="post-media" src="{{ url_for('static', filename=post['media_path']) }}" controls preload="metadata"></video>
                 {% endif %}
 
                 <div class="post-body">
                     {% if post['caption'] %}
                     <p class="post-caption">{{ post['caption'] }}</p>
                     {% endif %}
-
                     <div class="post-actions">
-                        <!-- Like button: class 'liked' is set by Jinja on page load -->
-                        <button class="action like-btn {% if already_liked %}liked{% endif %}"
-                                data-post-id="{{ post['id'] }}">
+                        <button class="action like-btn {% if already_liked %}liked{% endif %}" data-post-id="{{ post['id'] }}">
                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z"/>
                             </svg>
                             <span class="like-count">{{ post['like_count'] }}</span>
                         </button>
-
-                        <!-- Comment toggle button -->
-                        <button class="action comment-toggle-btn"
-                                data-post-id="{{ post['id'] }}">
+                        <button class="action comment-toggle-btn" data-post-id="{{ post['id'] }}">
                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                             </svg>
                             <span class="comment-count">{{ post['comment_count'] }}</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Comments section (hidden by default, toggled by JS) -->
+                <!-- Comments section -->
                 <div class="comments-section" id="comments-{{ post['id'] }}">
-                    <div class="comments-list" id="comments-list-{{ post['id'] }}">
-                        <!-- Loaded by JS on first open -->
-                    </div>
+                    <div class="comments-list" id="comments-list-{{ post['id'] }}"></div>
                     <div class="comment-form">
-                        <input
-                            class="comment-input"
-                            type="text"
-                            placeholder="Add a comment..."
-                            maxlength="1000"
-                            data-post-id="{{ post['id'] }}"
-                        >
+                        <input class="comment-input" type="text" placeholder="Add a comment..."
+                               maxlength="1000" data-post-id="{{ post['id'] }}">
                         <button class="comment-submit" data-post-id="{{ post['id'] }}">Post</button>
                     </div>
                 </div>
@@ -340,8 +337,7 @@
         {% else %}
             <div class="empty-state">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5"/>
                 </svg>
                 <p>No posts yet. Be the first to share something!</p>
                 <a href="/posts/create" class="empty-cta">Create a post</a>
@@ -351,77 +347,177 @@
 
     <aside class="sidebar-right">
         <p class="suggestions-title">Suggested for you</p>
-        {% for i in range(4) %}
-        <div class="suggestion">
-            <div class="skel skel-avatar"></div>
-            <div>
-                <div class="skel skel-line skel-short"></div>
-                <div class="skel skel-line skel-xshort"></div>
+        {% if suggestions %}
+            {% for s in suggestions %}
+            {% set already_following = s['id'] in followed_ids %}
+            <div class="suggestion">
+                <div class="avatar-letter" style="width:36px;height:36px;font-size:14px;flex-shrink:0">
+                    {{ s['username'][0] }}
+                </div>
+                <div style="flex:1;min-width:0;">
+                    <div style="font-size:13px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                        {{ s['username'] }}
+                    </div>
+                </div>
+                <button class="follow-btn sidebar-follow-btn {{ 'following' if already_following else '' }}"
+                        data-user-id="{{ s['id'] }}">
+                    {{ 'Following' if already_following else 'Follow' }}
+                </button>
             </div>
-            <button class="follow-btn">Follow</button>
-        </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <p style="font-size:13px;color:var(--muted)"></p>
+        {% endif %}
     </aside>
 
 </div>
 
 <script>
-// ─────────────────────────────────────────────
-// Utility: build a comment HTML element
-// ─────────────────────────────────────────────
-function buildCommentEl(comment) {
+// ─────────────────────────────────────────────────────────
+// DOM BUILDERS
+// ─────────────────────────────────────────────────────────
+
+/**
+ * Build a reply element (small, indented).
+ */
+function buildReplyEl(reply) {
     const div = document.createElement('div');
-    div.className = 'comment';
+    div.className = 'reply';
     div.innerHTML = `
-        <div class="comment-avatar">${comment.username[0].toUpperCase()}</div>
-        <div class="comment-body">
-            <div class="comment-author">${comment.username}</div>
-            <div class="comment-text">${comment.text}</div>
+        <div class="reply-avatar">${reply.username[0].toUpperCase()}</div>
+        <div class="reply-body">
+            <span class="reply-author">${reply.username}</span>
+            <span class="reply-date">${reply.created_at}</span>
+            <div class="reply-text">${reply.text}</div>
         </div>
     `;
     return div;
 }
 
-// ─────────────────────────────────────────────
+/**
+ * Build a top-level comment element, including:
+ *  - the comment text
+ *  - a "Reply" toggle button
+ *  - an inline reply form (hidden by default)
+ *  - a nested replies list (populated with existing replies if any)
+ */
+function buildCommentEl(comment, postId) {
+    const div = document.createElement('div');
+    div.className = 'comment';
+    div.dataset.commentId = comment.id;
+
+    div.innerHTML = `
+        <div class="comment-avatar">${comment.username[0].toUpperCase()}</div>
+        <div class="comment-body">
+            <div class="comment-header">
+                <span class="comment-author">${comment.username}</span>
+                <span class="comment-date">${comment.created_at}</span>
+            </div>
+            <div class="comment-text">${comment.text}</div>
+
+            <button class="reply-toggle">Reply</button>
+
+            <!-- Inline reply form, hidden until "Reply" is clicked -->
+            <div class="reply-form" id="reply-form-${comment.id}">
+                <input class="reply-input" type="text"
+                       placeholder="Reply to ${comment.username}..."
+                       maxlength="1000">
+                <button class="reply-submit">Reply</button>
+            </div>
+
+            <!-- Nested replies list -->
+            <div class="replies-list" id="replies-list-${comment.id}"></div>
+        </div>
+    `;
+
+    // Populate existing replies returned by the server on first load
+    const repliesList = div.querySelector(`#replies-list-${comment.id}`);
+    if (comment.replies && comment.replies.length > 0) {
+        comment.replies.forEach(reply => repliesList.appendChild(buildReplyEl(reply)));
+    }
+
+    // Wire up the Reply toggle button
+    const replyToggle = div.querySelector('.reply-toggle');
+    const replyForm   = div.querySelector(`#reply-form-${comment.id}`);
+    const replyInput  = replyForm.querySelector('.reply-input');
+
+    replyToggle.addEventListener('click', () => {
+        const isOpen = replyForm.classList.toggle('open');
+        replyToggle.textContent = isOpen ? 'Cancel' : 'Reply';
+        if (isOpen) replyInput.focus();
+    });
+
+    // Wire up the reply submit button
+    const replySubmit = replyForm.querySelector('.reply-submit');
+
+    async function submitReply() {
+        const text = replyInput.value.trim();
+        if (!text) return;
+
+        replySubmit.disabled = true;
+
+        try {
+            const res = await fetch(`/posts/${postId}/comments/${comment.id}/reply`, {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ text })
+            });
+
+            if (!res.ok) return;
+
+            const reply = await res.json();
+            repliesList.appendChild(buildReplyEl(reply));
+
+            // Reset the reply form
+            replyInput.value = '';
+            replyForm.classList.remove('open');
+            replyToggle.textContent = 'Reply';
+
+            repliesList.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        } finally {
+            replySubmit.disabled = false;
+        }
+    }
+
+    replySubmit.addEventListener('click', submitReply);
+    replyInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitReply(); });
+
+    return div;
+}
+
+// ─────────────────────────────────────────────────────────
 // LIKES
-// Each like button sends a POST to /posts/<id>/like
-// and updates the count + heart colour from the JSON response.
-// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────
 document.querySelectorAll('.like-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
-        const postId = btn.dataset.postId;
-
-        // Optimistic update — feel instant to the user
+        const postId  = btn.dataset.postId;
         const wasLiked = btn.classList.contains('liked');
         const countEl  = btn.querySelector('.like-count');
+
+        // Optimistic update
         btn.classList.toggle('liked', !wasLiked);
         countEl.textContent = parseInt(countEl.textContent) + (wasLiked ? -1 : 1);
-
-        // Trigger the pop animation
         btn.classList.remove('pop');
-        void btn.offsetWidth; // force reflow so animation restarts
+        void btn.offsetWidth;
         btn.classList.add('pop');
 
         try {
             const res  = await fetch(`/posts/${postId}/like`, { method: 'POST' });
             const data = await res.json();
-
-            // Sync with the server's actual values
             btn.classList.toggle('liked', data.liked);
             countEl.textContent = data.like_count;
         } catch {
-            // If the request failed, revert the optimistic update
+            // Revert on failure
             btn.classList.toggle('liked', wasLiked);
             countEl.textContent = parseInt(countEl.textContent) + (wasLiked ? 1 : -1);
         }
     });
 });
 
-// ─────────────────────────────────────────────
-// COMMENTS
-// Clicking the comment button toggles the section open/closed.
-// On the first open, comments are fetched from the server.
-// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────
+// COMMENTS — toggle open + lazy load on first open
+// ─────────────────────────────────────────────────────────
 document.querySelectorAll('.comment-toggle-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
         const postId  = btn.dataset.postId;
@@ -429,10 +525,9 @@ document.querySelectorAll('.comment-toggle-btn').forEach(btn => {
         const list    = document.getElementById(`comments-list-${postId}`);
         const isOpen  = section.classList.contains('open');
 
-        // Toggle open/close
         section.classList.toggle('open', !isOpen);
 
-        // Only fetch from server on the FIRST open (list is still empty)
+        // Fetch only on first open (list is empty)
         if (!isOpen && list.children.length === 0) {
             try {
                 const res      = await fetch(`/posts/${postId}/comments`);
@@ -441,7 +536,8 @@ document.querySelectorAll('.comment-toggle-btn').forEach(btn => {
                 if (comments.length === 0) {
                     list.innerHTML = '<p class="no-comments">No comments yet. Be the first!</p>';
                 } else {
-                    comments.forEach(c => list.appendChild(buildCommentEl(c)));
+                    // Each comment from the server already has a 'replies' array inside
+                    comments.forEach(c => list.appendChild(buildCommentEl(c, postId)));
                 }
             } catch {
                 list.innerHTML = '<p class="no-comments">Could not load comments.</p>';
@@ -450,11 +546,9 @@ document.querySelectorAll('.comment-toggle-btn').forEach(btn => {
     });
 });
 
-// ─────────────────────────────────────────────
-// SUBMITTING A COMMENT
-// Sends the text as JSON, then appends the returned
-// comment to the list without reloading the page.
-// ─────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────
+// SUBMITTING A TOP-LEVEL COMMENT
+// ─────────────────────────────────────────────────────────
 document.querySelectorAll('.comment-submit').forEach(submitBtn => {
     submitBtn.addEventListener('click', async () => {
         const postId  = submitBtn.dataset.postId;
@@ -464,11 +558,10 @@ document.querySelectorAll('.comment-submit').forEach(submitBtn => {
         const text    = input.value.trim();
 
         if (!text) return;
-
         submitBtn.disabled = true;
 
         try {
-            const res  = await fetch(`/posts/${postId}/comments`, {
+            const res = await fetch(`/posts/${postId}/comments`, {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify({ text })
@@ -482,14 +575,9 @@ document.querySelectorAll('.comment-submit').forEach(submitBtn => {
             const placeholder = list.querySelector('.no-comments');
             if (placeholder) placeholder.remove();
 
-            // Append the new comment and clear the input
-            list.appendChild(buildCommentEl(comment));
+            list.appendChild(buildCommentEl(comment, postId));
             input.value = '';
-
-            // Update the comment count in the action bar
             countEl.textContent = parseInt(countEl.textContent) + 1;
-
-            // Scroll the new comment into view
             list.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
         } finally {
@@ -498,14 +586,64 @@ document.querySelectorAll('.comment-submit').forEach(submitBtn => {
     });
 });
 
-// Allow pressing Enter to submit a comment
 document.querySelectorAll('.comment-input').forEach(input => {
     input.addEventListener('keydown', e => {
         if (e.key === 'Enter') {
-            const postId = input.dataset.postId;
-            document.querySelector(`.comment-submit[data-post-id="${postId}"]`).click();
+            document.querySelector(`.comment-submit[data-post-id="${input.dataset.postId}"]`).click();
         }
     });
 });
+
+
+// ─────────────────────────────────────────────────────────
+// POST FOLLOW BUTTONS
+// Shared logic: same toggle, updates ALL buttons for that
+// user on the page (sidebar + any post cards by same author)
+// ─────────────────────────────────────────────────────────
+async function toggleFollow(userId) {
+    const res  = await fetch(`/users/${userId}/follow`, { method: 'POST' });
+    const data = await res.json();
+    return data.following;
+}
+
+function updateAllFollowBtns(userId, following) {
+    // Update every button on the page for this user (post card + sidebar)
+    document.querySelectorAll(`[data-user-id="${userId}"]`).forEach(btn => {
+        if (following) {
+            btn.textContent = 'Following';
+            btn.classList.add('following');
+        } else {
+            btn.textContent = 'Follow';
+            btn.classList.remove('following');
+        }
+    });
+}
+
+document.querySelectorAll('.post-follow-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const userId = btn.dataset.userId;
+        try {
+            const following = await toggleFollow(userId);
+            updateAllFollowBtns(userId, following);
+        } catch {
+            console.error('Follow request failed');
+        }
+    });
+});
+
+// Reuse the same updateAllFollowBtns for sidebar buttons too
+document.querySelectorAll('.sidebar-follow-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const userId = btn.dataset.userId;
+        try {
+            const following = await toggleFollow(userId);
+            updateAllFollowBtns(userId, following);
+        } catch {
+            console.error('Follow request failed');
+        }
+    });
+});
+
+
 </script>
 {% endblock %}
