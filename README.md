@@ -14,9 +14,10 @@ Here are all the dependancy you need to have to launch the project.
 All you have to do is run this in your consol: <br>
 pip install flask psycopg2-binary bcrypt pyjwt python-dotenv
 
-You also need to create three folder under the static folder: <br>
--uploads <br>
-    -images<br>
-    -profile_pictures<br>
-    -videos<br>
+You also need to create three folder under the static folder, like this architecture: <br>
+static <br>
+ └──uploads <br>
+   ├──images<br>
+   ├──profile_pictures<br>
+   └──videos<br>
 All the media of the application will be stored in these folders. So there will be stored inside the project. In a real project it would have been better to save theme inside a could service.
