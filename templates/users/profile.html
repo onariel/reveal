@@ -1,5 +1,6 @@
+cat > /mnt/user-data/outputs/profile.html << 'EOF'
 {% extends "layout.html" %}
-{% block title %}My Profile — Pixly{% endblock %}
+{% block title %}{{ user['name'] }} — Reveal{% endblock %}
 
 {% block head %}
 <style>
@@ -25,14 +26,13 @@
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ── Profile header ── */
+    /* Profile header */
     .profile-header {
         display: flex; align-items: center; gap: 40px;
         padding: 48px 0 36px; border-bottom: 1px solid var(--border);
         animation: fadeIn 0.4s ease both;
     }
 
-    /* Avatar */
     .avatar-wrap { position: relative; flex-shrink: 0; }
     .avatar-wrap.editable { cursor: pointer; }
     .avatar-wrap.editable:hover .avatar-overlay { opacity: 1; }
@@ -55,52 +55,48 @@
         display: flex; flex-direction: column; align-items: center; justify-content: center;
         gap: 4px; opacity: 0; transition: opacity 0.2s;
     }
-    .avatar-overlay svg  { width: 20px; height: 20px; color: #fff; }
+    .avatar-overlay svg { width: 20px; height: 20px; color: #fff; }
     .avatar-overlay span { font-size: 10px; font-weight: 600; color: #fff; letter-spacing: 0.5px; }
     #picture-input { display: none; }
 
     .profile-info { flex: 1; }
     .profile-username { font-size: 24px; font-weight: 300; color: var(--text); }
     .profile-top-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-    .profile-follow-btn { padding: 7px 18px; border: 1px solid var(--border); border-radius: 8px; color: var(--accent);
-    background: none; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s;}
+    .profile-follow-btn {
+        padding: 7px 18px; border: 1px solid var(--border); border-radius: 8px;
+        color: var(--accent); background: none; font-family: 'DM Sans', sans-serif;
+        font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
     .profile-follow-btn:hover { background: rgba(232,197,71,0.08); }
     .profile-follow-btn.following { color: var(--muted); }
     .profile-follow-btn.following:hover { border-color: var(--error); color: var(--error); }
 
-    /* Stats row — posts / followers / following */
     .stats-row { display: flex; gap: 28px; margin-bottom: 16px; }
-
     .stat-btn {
         background: none; border: none; padding: 0; cursor: default;
         text-align: center; font-family: 'DM Sans', sans-serif;
     }
-    /* Followers and following open profile-list modals */
     .stat-btn.clickable { cursor: pointer; }
     .stat-btn.clickable:hover .stat-label { color: var(--accent); }
-
     .stat-number { display: block; font-size: 18px; font-weight: 700; color: var(--text); }
-    .stat-label  { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .stat-label { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
 
     .profile-bio { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 400px; }
     .no-bio { font-size: 13px; color: var(--muted); opacity: 0.5; font-style: italic; }
 
-    /* ── Posts grid ── */
+    /* Posts grid */
     .posts-section { padding-top: 32px; animation: fadeIn 0.4s ease 0.1s both; }
-
-    .posts-grid {
-        display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px;
-    }
+    .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
 
     .grid-post {
         aspect-ratio: 1; position: relative; overflow: hidden;
         background: var(--surface); cursor: pointer;
         display: block; color: inherit; text-decoration: none;
     }
-    .grid-post img,
-    .grid-post video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
-    .grid-post:hover img,
-    .grid-post:hover video { transform: scale(1.05); }
+    .grid-post img, .grid-post video {
+        width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s;
+    }
+    .grid-post:hover img, .grid-post:hover video { transform: scale(1.05); }
 
     .grid-overlay {
         position: absolute; inset: 0; background: rgba(0,0,0,0.4);
@@ -108,7 +104,6 @@
         gap: 20px; opacity: 0; transition: opacity 0.2s;
     }
     .grid-post:hover .grid-overlay { opacity: 1; }
-
     .overlay-stat {
         display: flex; align-items: center; gap: 5px;
         color: #fff; font-size: 14px; font-weight: 700;
@@ -116,70 +111,55 @@
     .overlay-stat svg { width: 16px; height: 16px; fill: white; }
 
     .no-posts { text-align: center; padding: 60px 0; color: var(--muted); }
-    .no-posts svg { width: 44px; height: 44px; margin: 0 auto 12px; opacity: 0.25; }
+    .no-posts svg { width: 44px; height: 44px; margin: 0 auto 12px; opacity: 0.25; display: block; }
     .no-posts p { font-size: 14px; }
 
-    /* ── Following modal ── */
+    /* Modals */
     .modal-backdrop {
         display: none; position: fixed; inset: 0;
         background: rgba(0,0,0,0.6); z-index: 200;
         align-items: center; justify-content: center;
     }
     .modal-backdrop.open { display: flex; }
-
     .modal {
         background: var(--surface); border: 1px solid var(--border);
         border-radius: 20px; width: 100%; max-width: 400px;
         max-height: 75vh; display: flex; flex-direction: column;
-        animation: fadeIn 0.25s ease both;
-        margin: 16px;
+        animation: fadeIn 0.25s ease both; margin: 16px;
     }
-
     .modal-header {
         display: flex; align-items: center; justify-content: space-between;
         padding: 20px 24px; border-bottom: 1px solid var(--border); flex-shrink: 0;
     }
     .modal-title { font-size: 16px; font-weight: 600; color: var(--text); }
-
     .modal-close {
         background: none; border: none; cursor: pointer; color: var(--muted);
         padding: 4px; display: flex; transition: color 0.2s;
     }
     .modal-close:hover { color: var(--text); }
     .modal-close svg { width: 20px; height: 20px; }
-
     .modal-body { overflow-y: auto; padding: 12px 0; flex: 1; }
-
     .following-row {
         display: flex; align-items: center; gap: 12px;
         padding: 10px 24px; transition: background 0.15s;
     }
     .following-row:hover { background: rgba(255,255,255,0.03); }
-
-    .row-avatar {
-        width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
-    }
+    .row-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
     .row-letter {
         width: 40px; height: 40px; border-radius: 50%;
-        background: rgba(232,197,71,0.15);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 15px; font-weight: 700; color: var(--accent);
-        text-transform: uppercase; flex-shrink: 0;
+        background: rgba(232,197,71,0.15); display: flex; align-items: center;
+        justify-content: center; font-size: 15px; font-weight: 700;
+        color: var(--accent); text-transform: uppercase; flex-shrink: 0;
     }
-    .row-username {
-        font-size: 14px; font-weight: 600; color: var(--text);
-        flex: 1; text-decoration: none;
-    }
+    .row-username { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; text-decoration: none; }
     .row-username:hover { color: var(--accent); }
-
     .row-unfollow {
         padding: 5px 14px; border: 1px solid var(--border); border-radius: 8px;
         font-size: 12px; font-weight: 600; color: var(--muted);
         background: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
-        transition: border-color 0.2s, color 0.2s; flex-shrink: 0;
+        transition: all 0.2s; flex-shrink: 0;
     }
     .row-unfollow:hover { border-color: var(--error); color: var(--error); }
-
     .modal-empty { text-align: center; padding: 40px 24px; color: var(--muted); font-size: 14px; }
 
     @media (max-width: 600px) {
@@ -191,7 +171,7 @@
 
 {% block content %}
 <nav class="navbar">
-    <div class="nav-logo">Pixly</div>
+    <div class="nav-logo">Reveal</div>
     <a href="/home" class="nav-back">
         <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
@@ -202,9 +182,7 @@
 
 <div class="page">
 
-    <!-- Profile header -->
     <div class="profile-header">
-
         <div class="avatar-wrap {% if is_own_profile %}editable{% endif %}"
              {% if is_own_profile %}onclick="document.getElementById('picture-input').click()"{% endif %}>
             {% if user['profile_picture_path'] %}
@@ -236,7 +214,6 @@
         <div class="profile-info">
             <div class="profile-top-row">
                 <div class="profile-username">{{ user['name'] }}</div>
-
                 {% if not is_own_profile %}
                     <button class="profile-follow-btn {% if is_following_user %}following{% endif %}"
                             data-user-id="{{ user['id'] }}">
@@ -247,14 +224,13 @@
 
             <div class="stats-row">
                 <div class="stat-btn">
-                    <span class="stat-number">{{ posts | length }}</span>
+                    <span class="stat-number">{{ posts|length }}</span>
                     <span class="stat-label">posts</span>
                 </div>
                 <button class="stat-btn clickable" id="open-followers-modal">
                     <span class="stat-number" id="followers-count-display">{{ followers_count }}</span>
                     <span class="stat-label">followers</span>
                 </button>
-                <!-- Clicking "following" opens the modal -->
                 <button class="stat-btn clickable" id="open-following-modal">
                     <span class="stat-number" id="following-count-display">{{ following_count }}</span>
                     <span class="stat-label">following</span>
@@ -267,21 +243,17 @@
                 <p class="no-bio">No bio yet.</p>
             {% endif %}
         </div>
-
     </div>
 
-    <!-- Posts grid -->
     <div class="posts-section">
         {% if posts %}
         <div class="posts-grid">
             {% for post in posts %}
             <a class="grid-post" href="/posts/{{ post['id'] }}">
                 {% if post['media_type'] == 'image' %}
-                    <img src="{{ url_for('static', filename=post['media_path']) }}"
-                         alt="Post" loading="lazy">
+                    <img src="{{ url_for('static', filename=post['media_path']) }}" alt="Post" loading="lazy">
                 {% elif post['media_type'] == 'video' %}
-                    <video src="{{ url_for('static', filename=post['media_path']) }}"
-                           preload="none" muted></video>
+                    <video src="{{ url_for('static', filename=post['media_path']) }}" preload="none" muted></video>
                 {% endif %}
                 <div class="grid-overlay">
                     <div class="overlay-stat">
@@ -298,7 +270,6 @@
             </a>
             {% endfor %}
         </div>
-
         {% else %}
         <div class="no-posts">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -309,7 +280,6 @@
         </div>
         {% endif %}
     </div>
-
 </div>
 
 <!-- Followers modal -->
@@ -323,14 +293,12 @@
                 </svg>
             </button>
         </div>
-        <div class="modal-body" id="followers-modal-body">
+        <div class="modal-body">
             {% if followers %}
                 {% for u in followers %}
                 <div class="following-row">
                     {% if u['profile_picture_path'] %}
-                        <img class="row-avatar"
-                             src="{{ url_for('static', filename=u['profile_picture_path']) }}"
-                             alt="{{ u['username'] }}">
+                        <img class="row-avatar" src="{{ url_for('static', filename=u['profile_picture_path']) }}" alt="{{ u['username'] }}">
                     {% else %}
                         <div class="row-letter">{{ u['username'][0] }}</div>
                     {% endif %}
@@ -338,9 +306,7 @@
                 </div>
                 {% endfor %}
             {% else %}
-                <p class="modal-empty">
-                    {{ 'You do not have any followers yet.' if is_own_profile else 'This user does not have any followers yet.' }}
-                </p>
+                <p class="modal-empty">{{ 'You have no followers yet.' if is_own_profile else 'No followers yet.' }}</p>
             {% endif %}
         </div>
     </div>
@@ -362,144 +328,91 @@
                 {% for u in following %}
                 <div class="following-row" id="modal-row-{{ u['id'] }}">
                     {% if u['profile_picture_path'] %}
-                        <img class="row-avatar"
-                             src="{{ url_for('static', filename=u['profile_picture_path']) }}"
-                             alt="{{ u['username'] }}">
+                        <img class="row-avatar" src="{{ url_for('static', filename=u['profile_picture_path']) }}" alt="{{ u['username'] }}">
                     {% else %}
                         <div class="row-letter">{{ u['username'][0] }}</div>
                     {% endif %}
                     <a class="row-username" href="/users/{{ u['id'] }}">{{ u['username'] }}</a>
                     {% if is_own_profile %}
-                        <button class="row-unfollow"
-                                data-user-id="{{ u['id'] }}"
-                                data-username="{{ u['username'] }}">
-                            Unfollow
-                        </button>
+                        <button class="row-unfollow" data-user-id="{{ u['id'] }}" data-username="{{ u['username'] }}">Unfollow</button>
                     {% endif %}
                 </div>
                 {% endfor %}
             {% else %}
-                <p class="modal-empty">
-                    {{ 'You are not following anyone yet.' if is_own_profile else 'This user is not following anyone yet.' }}
-                </p>
+                <p class="modal-empty">{{ 'You are not following anyone yet.' if is_own_profile else 'Not following anyone yet.' }}</p>
             {% endif %}
         </div>
     </div>
 </div>
 
 <script>
-// ── Profile picture ──────────────────────────────────────
 const pictureInput = document.getElementById('picture-input');
-
 if (pictureInput) {
     pictureInput.addEventListener('change', () => {
         const file = pictureInput.files[0];
         if (!file) return;
-
-        const url      = URL.createObjectURL(file);
+        const url = URL.createObjectURL(file);
         const existing = document.getElementById('avatar-preview');
-        const letter   = document.getElementById('avatar-letter');
-
-        if (existing) {
-            existing.src = url;
-        } else if (letter) {
+        const letter = document.getElementById('avatar-letter');
+        if (existing) { existing.src = url; }
+        else if (letter) {
             const img = document.createElement('img');
-            img.className = 'profile-avatar';
-            img.id = 'avatar-preview';
-            img.src = url;
+            img.className = 'profile-avatar'; img.id = 'avatar-preview'; img.src = url;
             letter.replaceWith(img);
         }
-
         document.getElementById('picture-form').submit();
     });
 }
 
-
-// ── Profile list modals ──────────────────────────────────
-function setupModal(modalId, openButtonId, closeButtonId) {
+function setupModal(modalId, openId, closeId) {
     const modal = document.getElementById(modalId);
-    const openButton = document.getElementById(openButtonId);
-    const closeButton = document.getElementById(closeButtonId);
-
-    if (!modal || !openButton || !closeButton) return;
-
-    openButton.addEventListener('click', () => modal.classList.add('open'));
-    closeButton.addEventListener('click', () => modal.classList.remove('open'));
-
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) modal.classList.remove('open');
-    });
+    const openBtn = document.getElementById(openId);
+    const closeBtn = document.getElementById(closeId);
+    if (!modal || !openBtn || !closeBtn) return;
+    openBtn.addEventListener('click', () => modal.classList.add('open'));
+    closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+    modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
 }
-
 setupModal('followers-modal', 'open-followers-modal', 'close-followers-modal');
 setupModal('following-modal', 'open-following-modal', 'close-following-modal');
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        document.querySelectorAll('.modal-backdrop.open').forEach(modal => {
-            modal.classList.remove('open');
-        });
-    }
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
 });
 
-
-// ── Unfollow from modal ──────────────────────────────────
 document.querySelectorAll('.row-unfollow').forEach(btn => {
     btn.addEventListener('click', async () => {
-        const userId   = btn.dataset.userId;
+        const userId = btn.dataset.userId;
         const username = btn.dataset.username;
-
         if (!confirm(`Unfollow ${username}?`)) return;
-
         try {
-            const res  = await fetch(`/users/${userId}/follow`, { method: 'POST' });
+            const res = await fetch(`/users/${userId}/follow`, {method:'POST'});
             const data = await res.json();
-
             if (!data.following) {
-                // Remove the row from the modal
                 const row = document.getElementById(`modal-row-${userId}`);
-                row.style.transition = 'opacity 0.2s';
-                row.style.opacity = '0';
+                row.style.transition = 'opacity 0.2s'; row.style.opacity = '0';
                 setTimeout(() => {
                     row.remove();
-
-                    // Update the following count in the stats bar
-                    const countEl  = document.getElementById('following-count-display');
-                    const newCount = parseInt(countEl.textContent) - 1;
-                    countEl.textContent = newCount;
-
-                    // Show empty message if list is now empty
+                    const countEl = document.getElementById('following-count-display');
+                    countEl.textContent = parseInt(countEl.textContent) - 1;
                     const body = document.getElementById('following-modal-body');
-                    if (body.children.length === 0) {
+                    if (body.querySelectorAll('.following-row').length === 0)
                         body.innerHTML = '<p class="modal-empty">You are not following anyone yet.</p>';
-                    }
                 }, 220);
             }
-        } catch {
-            console.error('Unfollow failed');
-        }
+        } catch { console.error('Unfollow failed'); }
     });
 });
 
 document.querySelectorAll('.profile-follow-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
-        const userId = btn.dataset.userId;
-
         try {
-            const res = await fetch(`/users/${userId}/follow`, { method: 'POST' });
+            const res = await fetch(`/users/${btn.dataset.userId}/follow`, {method:'POST'});
             const data = await res.json();
-
             btn.classList.toggle('following', data.following);
             btn.textContent = data.following ? 'Unfollow' : 'Follow';
-
             const followersEl = document.getElementById('followers-count-display');
-            if (followersEl) {
-                const current = parseInt(followersEl.textContent);
-                followersEl.textContent = current + (data.following ? 1 : -1);
-            }
-        } catch {
-            console.error('Follow failed');
-        }
+            if (followersEl) followersEl.textContent = parseInt(followersEl.textContent) + (data.following ? 1 : -1);
+        } catch { console.error('Follow failed'); }
     });
 });
 </script>

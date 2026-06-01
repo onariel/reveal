@@ -10,7 +10,8 @@ comments_bp = Blueprint('comments', __name__)
 @require_auth
 def get_comments(post_id):
     comments = get_comments_by_post(post_id)
-    return jsonify(comments)
+    tree = build_comment_tree(comments)   # ← organise into nested structure
+    return jsonify(tree)    
 
 
 @comments_bp.route('/posts/<int:post_id>/comments', methods=['POST'])
