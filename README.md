@@ -1,8 +1,16 @@
 # reveal
-This porject is a school project that aims at recreating a social media app. Our model is instagram.
+This porject is a school project that aims at recreating a social media app. Our model is instagram. <br>
 
-For now this project only works in local, even the database.
-To launch this project you need to download postgresql and create a .env file with this template: <br> <br>
+• Reveal is our transparent algorithmic intelligence system, inspired and ​benchmarked against Instagram. ​<br>
+• Like Instagram, we help users connect and socialize better.​ <br>
+
+​Our key difference: 
+
+• We show users why content or people are recommended for ​selected videos and friend suggestions. ​ <br>
+• This empowers users to understand and control the algorithm by liking ​content or tapping “Not Interested” to shape their own feed.  
+
+For now this project only works in local, even the database.  <br>
+To launch this project you need to download postgresql and create a .env file with this template: <br> 
 DB_NAME="postgres" <br>
 DB_HOST="localhost" <br>
 DB_PASSWORD="enter your password" <br>
@@ -22,8 +30,23 @@ static <br>
    └──videos<br>
 All the media of the application will be stored in these folders. So there will be stored inside the project. In a real project it would have been better to save theme inside a could service.<br>
 
-Features <br>
-Done  <br>
+Main Algorithms <br>
+
+• Priority queues are going to be the main feed algorithm.
+• To actually get the score for the priority queue we are going to use Weighted Scoring. <br>
+• Breadth-First Search is going to be the algorithm to recemend freinds
+• There will also be a keyword filter to ban certain posts <br>
+
+Development Environment <br>
+
+• For this project, we use Python as the main programming languagebecause it is well-suited for implementing algorithms and handling data efficiently. <br>
+• The database system chosen is PostgreSQL, which provides strong reliability and supports structured data needed for managing users, posts, and interactions. <br>
+• For collaboration and version control, we use Git and GitHub,allowing the team to work simultaneously, track changes, and manage the project efficiently. <br>
+• In terms of development tools, we use PyCharm and Visual Studio Code as our main IDEs. These tools help us write, debug, and manage code more effectively throughout the project. <br>
+
+Features: <br>
+
+Completed  <br>
 
 User authentication — Register with username + email + password. Login sets an HTTP-only JWT cookie. Logout deletes the cookie. Passwords are hashed with bcrypt before storage. The login form accepts either email or username. <br>
 User profiles — View any user's profile showing their post grid, post count, follower count, and following count. Click followers or following to open a modal list. <br>
