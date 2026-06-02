@@ -3,6 +3,8 @@ import uuid
 from flask import Blueprint, request, render_template, redirect, url_for, current_app
 from middleware.auth import require_auth
 from models.post import create_post, get_post_by_id, update_post, delete_post
+from services.post_ranking_service import get_ranked_feed_post_ids
+from services.feed_navigation_service import FeedNavigator
 posts_bp = Blueprint('posts', __name__)
 
 # Allowed file extensions per media type
@@ -67,10 +69,16 @@ def detail(post_id):
     if not post:
         return "Post not found", 404
 
+    post_ids = get_ranked_feed_post_ids(request.user_id)
+    navigator = FeedNavigator(post_ids)
+    neighbors = navigator.get_neighbors(post_id)
+
     return render_template(
         'posts/detail.html',
         post=post,
-        current_user_id=request.user_id
+        current_user_id=request.user_id,
+        prev_post_id=neighbors['prev_post_id'],
+        next_post_id=neighbors['next_post_id']
     )
 
 

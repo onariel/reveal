@@ -13,7 +13,7 @@ def jaccard_similarity(set1, set2):
     return len(intersection) / len(union)
 
 
-def get_suggested_user_ids(current_user_id, limit=5):
+def get_follow_recommendations(current_user_id, limit=5):
     db = get_db()
     cursor = db.cursor()
 
@@ -39,13 +39,16 @@ def get_suggested_user_ids(current_user_id, limit=5):
     excluded_users.add(current_user_id)
 
     scores = defaultdict(float)
-
+    reason_map = {}
     for followed_user_id in current_following:
         for candidate_id in following_map[followed_user_id]:
             if candidate_id in excluded_users:
                 continue
 
             scores[candidate_id] += 3
+
+            if candidate_id not in reason_map:
+                reason_map[candidate_id] = followed_user_id
 
     for candidate_id in all_users:
         if candidate_id in excluded_users:
@@ -69,4 +72,10 @@ def get_suggested_user_ids(current_user_id, limit=5):
         reverse=True
     )
 
-    return [user_id for user_id, score in ranked_candidates[:limit]]
+    return [
+        {
+            'user_id': user_id,
+            'reason_user_id': reason_map.get(user_id)
+        }
+        for user_id, score in ranked_candidates[:limit]
+    ]

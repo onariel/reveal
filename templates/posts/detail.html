@@ -25,5 +25,18 @@
             <button type="submit" onclick="return confirm('Delete this post?')">Delete</button>
         </form>
     {% endif %}
+
+    <div style="display:flex; justify-content:space-between; margin-top:24px;">
+    {% if prev_post_id %}
+        <a href="/posts/{{ prev_post_id }}">Previous post</a>
+    {% else %}
+        <span></span>
+    {% endif %}
+
+    {% if next_post_id %}
+        <a href="/posts/{{ next_post_id }}">Next post</a>
+    {% else %}
+        <span></span>
+    {% endif %}
 </div>
 {% endblock %}
